@@ -6,12 +6,12 @@
     <title>Sternberg's Triangle of Love - Dr. Nakip</title>
     <style>
         :root {
-            /* UI Palette */
+            /* VIBRANT UI Palette */
             --bg-color: #f8fafc;
             --text-color: #1e293b;
-            --passion-color: #ba0c2f;    /* Cherry Burgundy */
-            --liking-color: #007a86;     /* Turquoise Teal */
-            --commitment-color: #8a9a5b; /* Sage Green */
+            --passion-color: #ff0040;    /* Vibrant Crimson */
+            --liking-color: #00bfff;     /* Vibrant Sky Blue */
+            --commitment-color: #32cd32; /* Vibrant Lime Green */
             --empty-color: #cbd5e1;      /* Base Gray */
             --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
@@ -90,7 +90,7 @@
 
         #love-polygon {
             fill-opacity: 0.95;
-            transition: points 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), fill 0.2s ease;
+            transition: points 0.15s linear, fill 0.2s ease;
         }
 
         .label {
@@ -103,6 +103,14 @@
         .label.liking { fill: var(--liking-color); }
         .label.passion { fill: var(--passion-color); }
         .label.commitment { fill: var(--commitment-color); }
+
+        .total-score {
+            font-size: 28px;
+            font-weight: 900;
+            fill: #64748b; 
+            transition: fill 0.2s ease;
+            pointer-events: none; 
+        }
 
         #controls-wrapper {
             width: 90%;
@@ -129,7 +137,6 @@
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
         }
         
-        /* Show tooltip on hover for desktop, and active (tap) for mobile */
         label:hover .tooltip-text,
         label:active .tooltip-text { 
             visibility: visible; 
@@ -143,42 +150,15 @@
         .l-ui { color: var(--liking-color); }
         .c-ui { color: var(--commitment-color); }
 
-        /* --- MOBILE RESPONSIVENESS (SMARTPHONE FIX) --- */
         @media (max-width: 768px) {
             header { padding: 20px 15px 10px 15px; }
             h1 { font-size: 1.8rem; }
             .header-logo { max-width: 280px; }
-
-            /* Stack the narrative box and the triangle vertically */
-            .main-container {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            /* Allow the narrative box to fill the width */
-            #narrative-box {
-                flex: none;
-                width: 100%;
-                min-height: auto;
-            }
-
-            /* Adjust the triangle scene to fit the screen */
-            .triangle-scene {
-                height: auto;
-                max-width: 400px; 
-                margin: 0 auto;
-            }
-
-            /* Stack the three sliders vertically instead of side-by-side */
-            #controls-wrapper {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 25px;
-            }
-
-            .tooltip-text {
-                width: 200px; /* Slightly narrower tooltips for mobile */
-            }
+            .main-container { flex-direction: column; gap: 20px; }
+            #narrative-box { flex: none; width: 100%; min-height: auto; }
+            .triangle-scene { height: auto; max-width: 400px; margin: 0 auto; }
+            #controls-wrapper { grid-template-columns: 1fr; gap: 20px; padding: 25px; }
+            .tooltip-text { width: 200px; }
         }
     </style>
 </head>
@@ -200,20 +180,33 @@
 
     <div class="triangle-scene">
         <svg viewBox="0 0 500 500">
-            <text x="250" y="45" text-anchor="middle" class="label liking">Liking (Friendship)</text>
-            <text x="10" y="480" text-anchor="start" class="label passion">Passion</text>
-            <text x="490" y="480" text-anchor="end" class="label commitment">Commitment</text>
+            <text x="250" y="30" text-anchor="middle" class="label liking">
+                <tspan x="250" dy="0">Liking</tspan>
+                <tspan x="250" dy="20" style="font-size: 14px;">(Friendship)</tspan>
+            </text>
+            
+            <text x="10" y="470" text-anchor="start" class="label passion">
+                <tspan x="10" dy="0">Passion</tspan>
+                <tspan x="10" dy="20" style="font-size: 14px;">(Physical Intimacy)</tspan>
+            </text>
+            
+            <text x="490" y="470" text-anchor="end" class="label commitment">
+                <tspan x="490" dy="0">Commitment</tspan>
+                <tspan x="490" dy="20" style="font-size: 14px;">(Pledge)</tspan>
+            </text>
 
             <polygon id="base-triangle" points="250,70 50,440 450,440" />
-            <polygon id="love-polygon" points="250,235 220,287 280,287" fill="#cbd5e1" />
+            <polygon id="love-polygon" points="250,220 205,295 295,295" fill="#cbd5e1" />
+            
+            <text id="total-display" x="250" y="280" text-anchor="middle" class="total-score">0</text>
         </svg>
     </div>
 </div>
 
 <div id="controls-wrapper">
     <div class="input-group p-ui">
-        <label>Passion <span class="val-num" id="val-p">0</span>
-            <span class="tooltip-text"><strong>Passion:</strong> The drive and excitement component. Associated with romance, physical attraction, and a strong feeling of enthusiasm.</span>
+        <label>Passion (Physical Intimacy) <span class="val-num" id="val-p">0</span>
+            <span class="tooltip-text"><strong>Passion (Physical Intimacy):</strong> The drive and excitement component. Associated with romance, physical attraction, and a strong feeling of enthusiasm.</span>
         </label>
         <input type="range" id="passion" min="0" max="100" value="0">
     </div>
@@ -226,8 +219,8 @@
     </div>
 
     <div class="input-group c-ui">
-        <label>Commitment <span class="val-num" id="val-c">0</span>
-            <span class="tooltip-text"><strong>Commitment:</strong> The decision and continuation component. Associated with finality, the future, and an agreement or pledge to stay together.</span>
+        <label>Commitment(Pledge) <span class="val-num" id="val-c">0</span>
+            <span class="tooltip-text"><strong>Commitment(Pledge):</strong> The decision and continuation component. Associated with finality, the future, and an agreement or pledge to stay together.</span>
         </label>
         <input type="range" id="commitment" min="0" max="100" value="0">
     </div>
@@ -239,43 +232,52 @@
     const cInput = document.getElementById('commitment');
     const lovePolygon = document.getElementById('love-polygon');
     const narrativeBox = document.getElementById('narrative-box');
+    const totalDisplay = document.getElementById('total-display');
 
     function update() {
         const p = parseInt(pInput.value);
         const l = parseInt(lInput.value);
         const c = parseInt(cInput.value);
 
-        document.getElementById('val-p').innerText = p;
-        document.getElementById('val-l').innerText = l;
-        document.getElementById('val-c').innerText = c;
+        // Fixed browser compatibility bug for text updating (.textContent instead of .innerText)
+        document.getElementById('val-p').textContent = p;
+        document.getElementById('val-l').textContent = l;
+        document.getElementById('val-c').textContent = c;
 
-        // --- 3D COLOR CUBE INTERPOLATION ---
+        const total = p + l + c;
+        totalDisplay.textContent = total;
+        
+        if (total > 0) {
+            totalDisplay.style.fill = "#ffffff";
+        } else {
+            totalDisplay.style.fill = "#64748b"; 
+        }
+
+        // --- VIBRANT 3D COLOR CUBE MATH ---
         const pn = p / 100;
         const ln = l / 100;
         const cn = c / 100;
 
-        const w000 = (1 - pn) * (1 - ln) * (1 - cn);
-        const w100 = pn * (1 - ln) * (1 - cn);      
-        const w010 = (1 - pn) * ln * (1 - cn);      
-        const w001 = (1 - pn) * (1 - ln) * cn;      
-        
-        const w110 = pn * ln * (1 - cn);            
-        const w101 = pn * (1 - ln) * cn;            
-        const w011 = (1 - pn) * ln * cn;            
-        
-        const w111 = pn * ln * cn;                  
+        const w000 = (1 - pn) * (1 - ln) * (1 - cn); 
+        const w100 = pn * (1 - ln) * (1 - cn);       
+        const w010 = (1 - pn) * ln * (1 - cn);       
+        const w001 = (1 - pn) * (1 - ln) * cn;       
+        const w110 = pn * ln * (1 - cn);             
+        const w101 = pn * (1 - ln) * cn;             
+        const w011 = (1 - pn) * ln * cn;             
+        const w111 = pn * ln * cn;                   
 
         const r = Math.round(
-            203 * w000 + 186 * w100 +   0 * w010 + 138 * w001 + 
-            216 * w110 + 211 * w101 +  40 * w011 + 102 * w111
+            203 * w000 + 255 * w100 +   0 * w010 +  50 * w001 + 
+            255 * w110 + 255 * w101 +   0 * w011 + 160 * w111
         );
         const g = Math.round(
-            213 * w000 +  12 * w100 + 122 * w010 + 154 * w001 + 
-             27 * w110 +  84 * w101 +  53 * w011 +  45 * w111
+            213 * w000 +   0 * w100 + 191 * w010 + 205 * w001 + 
+             50 * w110 + 140 * w101 + 220 * w011 +  32 * w111
         );
         const b = Math.round(
-            225 * w000 +  47 * w100 + 134 * w010 +  91 * w001 + 
-             96 * w110 +   0 * w101 + 147 * w011 + 145 * w111
+            225 * w000 +  64 * w100 + 255 * w010 +  50 * w001 + 
+            200 * w110 +   0 * w101 + 180 * w011 + 240 * w111
         );
 
         const currentColor = `rgb(${r}, ${g}, ${b})`;
@@ -283,9 +285,9 @@
         narrativeBox.style.borderLeftColor = currentColor;
 
         // --- GEOMETRIC STRETCH LOGIC ---
-        const coreLiking = { x: 250, y: 230 };
-        const corePassion = { x: 215, y: 290 };
-        const coreCommit = { x: 285, y: 290 };
+        const coreLiking = { x: 250, y: 220 };
+        const corePassion = { x: 205, y: 295 };
+        const coreCommit = { x: 295, y: 295 };
 
         const targetLiking = { x: 250, y: 70 };
         const targetPassion = { x: 50, y: 440 };
@@ -299,16 +301,16 @@
 
         lovePolygon.setAttribute('points', `${coreLiking.x},${ly} ${px},${py} ${cx_pt},${cy_pt}`);
 
-        // --- NARRATIVE LOGIC ---
+        // --- NARRATIVE LOGIC (Updated Terminology) ---
         let type = "Non-love", desc = "Absence of all three components.";
         
-        if (p > 70 && l > 70 && c > 70) { type = "Consummate Love"; desc = "The ideal balance of passion, friendship, and commitment."; }
-        else if (p > 70 && l > 70) { type = "Romantic Love"; desc = "Bonded through passion and friendship, but lacks commitment."; }
-        else if (l > 70 && c > 70) { type = "Companionate Love"; desc = "Deep friendship and commitment without the 'spark'."; }
-        else if (p > 70 && c > 70) { type = "Fatuous Love"; desc = "Whirlwind commitment based on passion alone."; }
+        if (p > 70 && l > 70 && c > 70) { type = "Consummate Love"; desc = "The ideal balance of Passion (Physical Intimacy), Liking (Friendship), and Commitment(Pledge)."; }
+        else if (p > 70 && l > 70) { type = "Romantic Love"; desc = "Bonded through Passion (Physical Intimacy) and Liking (Friendship), but lacks Commitment(Pledge)."; }
+        else if (l > 70 && c > 70) { type = "Companionate Love"; desc = "Deep friendship and Commitment(Pledge) without the 'spark'."; }
+        else if (p > 70 && c > 70) { type = "Fatuous Love"; desc = "Whirlwind Commitment(Pledge) based on Passion (Physical Intimacy) alone."; }
         else if (p > 70) { type = "Infatuation"; desc = "Intense physical desire without intimacy or future plans."; }
-        else if (l > 70) { type = "Liking (Friendship)"; desc = "Closeness and warmth without passion or commitment."; }
-        else if (c > 70) { type = "Empty Love"; desc = "Commitment remains, but the spark and connection have faded."; }
+        else if (l > 70) { type = "Liking (Friendship)"; desc = "Closeness and warmth without Passion (Physical Intimacy) or Commitment(Pledge)."; }
+        else if (c > 70) { type = "Empty Love"; desc = "Commitment(Pledge) remains, but the spark and connection have faded."; }
         else if (p > 0 || l > 0 || c > 0) { type = "Developing Love"; desc = "A mix of dimensions in transition."; }
 
         document.getElementById('love-type').innerText = type;
