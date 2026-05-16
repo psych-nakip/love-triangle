@@ -208,21 +208,21 @@
         <label>Passion (Physical Intimacy) <span class="val-num" id="val-p">0</span>
             <span class="tooltip-text"><strong>Passion (Physical Intimacy):</strong> The drive and excitement component. Associated with romance, physical attraction, and a strong feeling of enthusiasm.</span>
         </label>
-        <input type="range" id="passion" min="0" max="100" value="0">
+        <input type="range" id="passion" min="0" max="150" value="0">
     </div>
 
     <div class="input-group l-ui">
         <label>Liking (Friendship) <span class="val-num" id="val-l">0</span>
             <span class="tooltip-text"><strong>Liking (Friendship):</strong> The attachment and bonding component. Associated with connection, closeness, and understanding.</span>
         </label>
-        <input type="range" id="liking" min="0" max="100" value="0">
+        <input type="range" id="liking" min="0" max="150" value="0">
     </div>
 
     <div class="input-group c-ui">
         <label>Commitment(Pledge) <span class="val-num" id="val-c">0</span>
             <span class="tooltip-text"><strong>Commitment(Pledge):</strong> The decision and continuation component. Associated with finality, the future, and an agreement or pledge to stay together.</span>
         </label>
-        <input type="range" id="commitment" min="0" max="100" value="0">
+        <input type="range" id="commitment" min="0" max="150" value="0">
     </div>
 </div>
 
@@ -239,7 +239,6 @@
         const l = parseInt(lInput.value);
         const c = parseInt(cInput.value);
 
-        // Fixed browser compatibility bug for text updating (.textContent instead of .innerText)
         document.getElementById('val-p').textContent = p;
         document.getElementById('val-l').textContent = l;
         document.getElementById('val-c').textContent = c;
@@ -253,10 +252,10 @@
             totalDisplay.style.fill = "#64748b"; 
         }
 
-        // --- VIBRANT 3D COLOR CUBE MATH ---
-        const pn = p / 100;
-        const ln = l / 100;
-        const cn = c / 100;
+        // --- UPDATED MATH: Normalizing to a 150 scale instead of 100 ---
+        const pn = p / 150;
+        const ln = l / 150;
+        const cn = c / 150;
 
         const w000 = (1 - pn) * (1 - ln) * (1 - cn); 
         const w100 = pn * (1 - ln) * (1 - cn);       
@@ -301,16 +300,16 @@
 
         lovePolygon.setAttribute('points', `${coreLiking.x},${ly} ${px},${py} ${cx_pt},${cy_pt}`);
 
-        // --- NARRATIVE LOGIC (Updated Terminology) ---
+        // --- UPDATED NARRATIVE LOGIC: Scaled up to match a max of 150 (105 is 70% of 150) ---
         let type = "Non-love", desc = "Absence of all three components.";
         
-        if (p > 70 && l > 70 && c > 70) { type = "Consummate Love"; desc = "The ideal balance of Passion (Physical Intimacy), Liking (Friendship), and Commitment(Pledge)."; }
-        else if (p > 70 && l > 70) { type = "Romantic Love"; desc = "Bonded through Passion (Physical Intimacy) and Liking (Friendship), but lacks Commitment(Pledge)."; }
-        else if (l > 70 && c > 70) { type = "Companionate Love"; desc = "Deep friendship and Commitment(Pledge) without the 'spark'."; }
-        else if (p > 70 && c > 70) { type = "Fatuous Love"; desc = "Whirlwind Commitment(Pledge) based on Passion (Physical Intimacy) alone."; }
-        else if (p > 70) { type = "Infatuation"; desc = "Intense physical desire without intimacy or future plans."; }
-        else if (l > 70) { type = "Liking (Friendship)"; desc = "Closeness and warmth without Passion (Physical Intimacy) or Commitment(Pledge)."; }
-        else if (c > 70) { type = "Empty Love"; desc = "Commitment(Pledge) remains, but the spark and connection have faded."; }
+        if (p > 105 && l > 105 && c > 105) { type = "Consummate Love"; desc = "The ideal balance of Passion (Physical Intimacy), Liking (Friendship), and Commitment(Pledge)."; }
+        else if (p > 105 && l > 105) { type = "Romantic Love"; desc = "Bonded through Passion (Physical Intimacy) and Liking (Friendship), but lacks Commitment(Pledge)."; }
+        else if (l > 105 && c > 105) { type = "Companionate Love"; desc = "Deep friendship and Commitment(Pledge) without the 'spark'."; }
+        else if (p > 105 && c > 105) { type = "Fatuous Love"; desc = "Whirlwind Commitment(Pledge) based on Passion (Physical Intimacy) alone."; }
+        else if (p > 105) { type = "Infatuation"; desc = "Intense physical desire without intimacy or future plans."; }
+        else if (l > 105) { type = "Liking (Friendship)"; desc = "Closeness and warmth without Passion (Physical Intimacy) or Commitment(Pledge)."; }
+        else if (c > 105) { type = "Empty Love"; desc = "Commitment(Pledge) remains, but the spark and connection have faded."; }
         else if (p > 0 || l > 0 || c > 0) { type = "Developing Love"; desc = "A mix of dimensions in transition."; }
 
         document.getElementById('love-type').innerText = type;
